@@ -1,0 +1,25 @@
+{
+  "password": "123456",
+  "client": {
+    "email": "ana.silva@example.com",
+    "access_level": "client"
+  },
+  "admin": {
+    "email": "joao@barbeariaclassica.com",
+    "access_level": "admin"
+  },
+  "barber": {
+    "email": "joao.silva@example.com",
+    "access_level": "barber"
+  },
+  "superadmin": {
+    "email": "danieldeandradelopes@gmail.com",
+    "access_level": "superadmin"
+  },
+  "partner": {
+    "email": "parceiro@agende7.com",
+    "password": "123456",
+    "name": "Parceiro E2E",
+    "code": "E2E001"
+  }
+}

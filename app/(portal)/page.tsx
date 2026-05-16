@@ -37,7 +37,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div>
+    <div data-cy="partner-dashboard">
       <h1 className="text-2xl font-bold text-gray-900 mb-2">
         Olá, {me?.name?.split(" ")[0] ?? "parceiro"}
       </h1>

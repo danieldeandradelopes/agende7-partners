@@ -26,7 +26,7 @@ export default function LinksPage() {
   }
 
   return (
-    <div>
+    <div data-cy="partner-links-page">
       <h1 className="text-2xl font-bold text-gray-900 mb-2">Meus links</h1>
       <p className="text-gray-600 mb-6">
         Código <code className="text-[var(--color-primary)]">{code}</code>

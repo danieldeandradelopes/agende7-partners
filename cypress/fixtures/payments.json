@@ -1,0 +1,87 @@
+{
+  "createPreference": {
+    "preferenceId": "e2e-preference-id",
+    "payment": {
+      "id": 9001,
+      "amount": 5990,
+      "status": "pending"
+    }
+  },
+  "processPayment": {
+    "status": "approved",
+    "payment_id": 9001,
+    "subscription_id": 1
+  },
+  "publicSignup": {
+    "token": "e2e-signup-token",
+    "user": {
+      "id": 9999,
+      "name": "Admin E2E",
+      "email": "e2e-signup@test.com",
+      "access_level": "admin"
+    },
+    "barbershop": {
+      "id": 9999,
+      "name": "Barbearia E2E",
+      "subdomain": "e2e-test-shop"
+    },
+    "subscription": {
+      "id": 9999,
+      "status": "active"
+    },
+    "paymentId": null
+  },
+  "partnerLogin": {
+    "token": "e2e-partner-token",
+    "sales_rep": {
+      "id": 1,
+      "name": "Parceiro E2E",
+      "email": "parceiro@agende7.com",
+      "code": "E2E001",
+      "is_active": true
+    }
+  },
+  "partnerMe": {
+    "id": 1,
+    "name": "Parceiro E2E",
+    "email": "parceiro@agende7.com",
+    "phone": null,
+    "document": null,
+    "code": "E2E001",
+    "is_active": true,
+    "default_commission_percent": 10,
+    "commission_duration_months": 12,
+    "payout_method": null,
+    "pix_key_type": null,
+    "pix_key": null,
+    "bank_code": null,
+    "bank_name": null,
+    "bank_agency": null,
+    "bank_account": null,
+    "bank_account_digit": null,
+    "bank_account_type": null
+  },
+  "partnerCommissionSummary": {
+    "pending_clearance": 150,
+    "available": 50,
+    "paid": 200,
+    "canceled": 0,
+    "total_count": 3
+  },
+  "partnerLinks": {
+    "code": "E2E001",
+    "is_active": true,
+    "groups": [
+      {
+        "title": "Indicações",
+        "links": [
+          {
+            "label": "Landing",
+            "url": "https://agende7.com/?ref=E2E001",
+            "description": "Link principal"
+          }
+        ]
+      }
+    ]
+  }
+}

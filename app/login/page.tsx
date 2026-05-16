@@ -48,6 +48,7 @@ export default function LoginPage() {
           <div>
             <label className="block text-sm text-gray-600 mb-1">E-mail</label>
             <input
+              data-cy="login-email"
               type="email"
               className="input"
               required
@@ -58,6 +59,7 @@ export default function LoginPage() {
           <div>
             <label className="block text-sm text-gray-600 mb-1">Senha</label>
             <input
+              data-cy="login-password"
               type="password"
               className="input"
               required
@@ -67,7 +69,12 @@ export default function LoginPage() {
             />
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
-          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+          <button
+            type="submit"
+            className="btn btn-primary w-full"
+            disabled={loading}
+            data-cy="login-submit"
+          >
             {loading ? "Entrando…" : "Entrar"}
           </button>
         </form>

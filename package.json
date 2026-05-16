@@ -6,7 +6,12 @@
     "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start -p 3002",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cy:open": "cypress open",
+    "test:e2e": "start-server-and-test 'bash scripts/e2e-serve.sh' 'bash scripts/e2e-wait.sh' 'cypress run'"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["cypress"]
   },
   "dependencies": {
     "next": "16.0.10",
@@ -21,6 +26,10 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.10",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "concurrently": "^9.1.2",
+    "cypress": "^14.5.4",
+    "start-server-and-test": "^2.1.5",
+    "wait-on": "^8.0.5"
   }
 }

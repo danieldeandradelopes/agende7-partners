@@ -33,7 +33,7 @@ export default function ComissoesPage() {
   }, [status]);
 
   return (
-    <div>
+    <div data-cy="partner-commissions-page">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Minhas comissões</h1>
 
       <div className="mb-4">
