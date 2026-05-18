@@ -1,26 +1,31 @@
+const apiBase = () =>
+  String(Cypress.env("apiUrl") ?? "http://localhost:3000").replace(/\/$/, "");
+
 Cypress.Commands.add("mockPartnerApi", () => {
+  const base = apiBase();
+
   cy.fixture("payments").then((payments) => {
-    cy.intercept("POST", "**/sales-partner/auth/login", {
+    cy.intercept("POST", `${base}/sales-partner/auth/login`, {
       statusCode: 200,
       body: payments.partnerLogin,
     }).as("partnerLogin");
 
-    cy.intercept("GET", "**/sales-partner/me", {
+    cy.intercept("GET", `${base}/sales-partner/me`, {
       statusCode: 200,
       body: payments.partnerMe,
     }).as("partnerMe");
 
-    cy.intercept("GET", "**/sales-partner/me/commissions/summary", {
+    cy.intercept("GET", `${base}/sales-partner/me/commissions/summary`, {
       statusCode: 200,
       body: payments.partnerCommissionSummary,
     }).as("partnerCommissionSummary");
 
-    cy.intercept("GET", "**/sales-partner/me/commissions*", {
+    cy.intercept("GET", `${base}/sales-partner/me/commissions*`, {
       statusCode: 200,
       body: [],
     }).as("partnerCommissions");
 
-    cy.intercept("GET", "**/sales-partner/me/links", {
+    cy.intercept("GET", `${base}/sales-partner/me/links`, {
       statusCode: 200,
       body: payments.partnerLinks,
     }).as("partnerLinks");

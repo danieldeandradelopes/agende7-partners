@@ -5,7 +5,7 @@ export default defineConfig({
     baseUrl: "http://localhost:3002",
     specPattern: "cypress/e2e/**/*.cy.ts",
     supportFile: "cypress/support/e2e.ts",
-    video: true,
+    video: false,
     screenshotOnRunFailure: true,
     defaultCommandTimeout: 15000,
     requestTimeout: 20000,
@@ -15,5 +15,13 @@ export default defineConfig({
   },
   env: {
     apiUrl: "http://localhost:3000",
+  },
+
+  setupNodeEvents(_on, config) {
+    const raw = config.env.useMocks;
+    const fromCliOrConfig = raw === true || raw === "true";
+    const fromCi = process.env.CYPRESS_USE_MOCKS === "true";
+    config.env.useMocks = fromCliOrConfig || fromCi;
+    return config;
   },
 });

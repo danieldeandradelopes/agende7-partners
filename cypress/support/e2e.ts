@@ -1,5 +1,8 @@
 import "./commands";
+import { isMockMode } from "./env";
 
 beforeEach(() => {
-  cy.mockPartnerApi();
+  if (isMockMode()) {
+    cy.mockPartnerApi();
+  }
 });

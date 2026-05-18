@@ -4,50 +4,62 @@ on:
   push:
     branches: [main, master]
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  e2e:
+  e2e-mock:
+    name: E2E (mock API)
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "pnpm"
-          cache-dependency-path: |
-            agende7-partners/pnpm-lock.yaml
-            agende7-backend/pnpm-lock.yaml
+          cache-dependency-path: agende7-partners/pnpm-lock.yaml
+
+      - name: Cache Cypress binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-cypress-14-${{ hashFiles('agende7-partners/pnpm-lock.yaml') }}
+          restore-keys: |
+            cypress-${{ runner.os }}-cypress-14-
 
       - name: Install dependencies
-        run: |
-          pnpm install --dir agende7-backend
-          pnpm install --dir agende7-partners
-
-      - name: Start Postgres and seed
-        working-directory: agende7-backend
-        run: |
-          docker compose up -d postgres
-          sleep 5
-          pnpm migration:run
-          pnpm seed:master
-
-      - name: Run E2E
         working-directory: agende7-partners
-        run: pnpm test:e2e
+        run: pnpm install --frozen-lockfile
 
-      - name: Upload artifacts
+      - name: Verify Cypress
+        working-directory: agende7-partners
+        run: pnpm exec cypress verify
+
+      - name: Run E2E (sem backend)
+        working-directory: agende7-partners
+        run: pnpm test:e2e:mock
+        env:
+          CYPRESS_USE_MOCKS: "true"
+          ELECTRON_RUN_AS_NODE: ""
+
+      - name: Upload screenshots
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-partners
-          path: |
-            agende7-partners/cypress/screenshots
-            agende7-partners/cypress/videos
+          name: cypress-screenshots-partners
+          path: agende7-partners/cypress/screenshots
           if-no-files-found: ignore
+          retention-days: 7
