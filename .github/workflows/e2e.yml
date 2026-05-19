@@ -30,26 +30,22 @@ jobs:
         with:
           node-version: "20"
           cache: "pnpm"
-          cache-dependency-path: agende7-partners/pnpm-lock.yaml
 
       - name: Cache Cypress binary
         uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
-          key: cypress-${{ runner.os }}-cypress-14-${{ hashFiles('agende7-partners/pnpm-lock.yaml') }}
+          key: cypress-${{ runner.os }}-cypress-14-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             cypress-${{ runner.os }}-cypress-14-
 
       - name: Install dependencies
-        working-directory: agende7-partners
         run: pnpm install --frozen-lockfile
 
       - name: Verify Cypress
-        working-directory: agende7-partners
         run: pnpm exec cypress verify
 
       - name: Run E2E (sem backend)
-        working-directory: agende7-partners
         run: pnpm test:e2e:mock
         env:
           CYPRESS_USE_MOCKS: "true"
@@ -60,6 +56,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots-partners
-          path: agende7-partners/cypress/screenshots
+          path: cypress/screenshots
           if-no-files-found: ignore
           retention-days: 7
