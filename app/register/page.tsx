@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { formatBrazilianDocument, formatPhone, onlyDigits } from "@/lib/masks";
 import { partnerApi } from "@/services/api";
 
 export default function RegisterPage() {
@@ -29,8 +30,8 @@ export default function RegisterPage() {
         name: form.name,
         email: form.email,
         password: form.password,
-        phone: form.phone || undefined,
-        document: form.document || undefined,
+        phone: form.phone ? onlyDigits(form.phone) : undefined,
+        document: form.document ? onlyDigits(form.document) : undefined,
       });
       setSuccess(result.message);
       setTimeout(() => router.push("/login"), 2500);
@@ -78,8 +79,13 @@ export default function RegisterPage() {
             <label className="block text-sm text-gray-600 mb-1">Telefone</label>
             <input
               className="input"
+              type="tel"
               value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, phone: formatPhone(e.target.value) })
+              }
+              placeholder="(11) 99999-9999"
+              inputMode="numeric"
             />
           </div>
           <div>
@@ -87,7 +93,14 @@ export default function RegisterPage() {
             <input
               className="input"
               value={form.document}
-              onChange={(e) => setForm({ ...form, document: e.target.value })}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  document: formatBrazilianDocument(e.target.value),
+                })
+              }
+              placeholder="000.000.000-00 ou 00.000.000/0000-00"
+              inputMode="numeric"
             />
           </div>
           <div>

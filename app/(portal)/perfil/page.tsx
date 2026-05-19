@@ -1,6 +1,13 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import {
+  formatBrazilianDocument,
+  formatPhone,
+  formatPixKey,
+  normalizePixKey,
+  onlyDigits,
+} from "@/lib/masks";
 import { partnerApi, type PartnerMe } from "@/services/api";
 
 export default function PerfilPage() {
@@ -21,15 +28,15 @@ export default function PerfilPage() {
     setError(null);
     try {
       const updated = await partnerApi.updateMe({
-        phone: me.phone,
-        document: me.document,
+        phone: me.phone ? onlyDigits(me.phone) : null,
+        document: me.document ? onlyDigits(me.document) : null,
         payout_method: me.payout_method,
         pix_key_type: me.pix_key_type,
-        pix_key: me.pix_key,
-        bank_code: me.bank_code,
+        pix_key: normalizePixKey(me.pix_key, me.pix_key_type),
+        bank_code: me.bank_code ? onlyDigits(me.bank_code).slice(0, 3) : null,
         bank_name: me.bank_name,
-        bank_agency: me.bank_agency,
-        bank_account: me.bank_account,
+        bank_agency: me.bank_agency ? onlyDigits(me.bank_agency) : null,
+        bank_account: me.bank_account ? onlyDigits(me.bank_account) : null,
         bank_account_digit: me.bank_account_digit,
         bank_account_type: me.bank_account_type,
       });
@@ -63,16 +70,23 @@ export default function PerfilPage() {
           <label className="block text-sm text-gray-600 mb-1">Telefone</label>
           <input
             className="input"
-            value={me.phone ?? ""}
-            onChange={(e) => setMe({ ...me, phone: e.target.value })}
+            type="tel"
+            value={formatPhone(me.phone ?? "")}
+            onChange={(e) => setMe({ ...me, phone: formatPhone(e.target.value) })}
+            placeholder="(11) 99999-9999"
+            inputMode="numeric"
           />
         </div>
         <div>
           <label className="block text-sm text-gray-600 mb-1">CPF/CNPJ</label>
           <input
             className="input"
-            value={me.document ?? ""}
-            onChange={(e) => setMe({ ...me, document: e.target.value })}
+            value={formatBrazilianDocument(me.document ?? "")}
+            onChange={(e) =>
+              setMe({ ...me, document: formatBrazilianDocument(e.target.value) })
+            }
+            placeholder="000.000.000-00 ou 00.000.000/0000-00"
+            inputMode="numeric"
           />
         </div>
 
@@ -108,7 +122,11 @@ export default function PerfilPage() {
                 className="input"
                 value={me.pix_key_type ?? ""}
                 onChange={(e) =>
-                  setMe({ ...me, pix_key_type: e.target.value || null })
+                  setMe({
+                    ...me,
+                    pix_key_type: e.target.value || null,
+                    pix_key: formatPixKey(me.pix_key ?? "", e.target.value),
+                  })
                 }
               >
                 <option value="">Selecione</option>
@@ -123,8 +141,20 @@ export default function PerfilPage() {
               <label className="block text-sm text-gray-600 mb-1">Chave PIX</label>
               <input
                 className="input"
-                value={me.pix_key ?? ""}
-                onChange={(e) => setMe({ ...me, pix_key: e.target.value })}
+                value={formatPixKey(me.pix_key ?? "", me.pix_key_type)}
+                onChange={(e) =>
+                  setMe({
+                    ...me,
+                    pix_key: formatPixKey(e.target.value, me.pix_key_type),
+                  })
+                }
+                inputMode={
+                  me.pix_key_type === "cpf" ||
+                  me.pix_key_type === "cnpj" ||
+                  me.pix_key_type === "phone"
+                    ? "numeric"
+                    : undefined
+                }
               />
             </div>
           </>
@@ -137,7 +167,14 @@ export default function PerfilPage() {
               <input
                 className="input"
                 value={me.bank_code ?? ""}
-                onChange={(e) => setMe({ ...me, bank_code: e.target.value })}
+                onChange={(e) =>
+                  setMe({
+                    ...me,
+                    bank_code: onlyDigits(e.target.value).slice(0, 3),
+                  })
+                }
+                inputMode="numeric"
+                maxLength={3}
               />
             </div>
             <div>
@@ -153,7 +190,10 @@ export default function PerfilPage() {
               <input
                 className="input"
                 value={me.bank_agency ?? ""}
-                onChange={(e) => setMe({ ...me, bank_agency: e.target.value })}
+                onChange={(e) =>
+                  setMe({ ...me, bank_agency: onlyDigits(e.target.value) })
+                }
+                inputMode="numeric"
               />
             </div>
             <div>
@@ -161,7 +201,10 @@ export default function PerfilPage() {
               <input
                 className="input"
                 value={me.bank_account ?? ""}
-                onChange={(e) => setMe({ ...me, bank_account: e.target.value })}
+                onChange={(e) =>
+                  setMe({ ...me, bank_account: onlyDigits(e.target.value) })
+                }
+                inputMode="numeric"
               />
             </div>
             <div>
@@ -170,8 +213,14 @@ export default function PerfilPage() {
                 className="input"
                 value={me.bank_account_digit ?? ""}
                 onChange={(e) =>
-                  setMe({ ...me, bank_account_digit: e.target.value })
+                  setMe({
+                    ...me,
+                    bank_account_digit: e.target.value
+                      .replace(/[^0-9a-zA-Z]/g, "")
+                      .slice(0, 2),
+                  })
                 }
+                maxLength={2}
               />
             </div>
             <div>
