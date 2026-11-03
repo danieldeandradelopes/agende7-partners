@@ -59,6 +59,7 @@ export default function RegisterPage() {
           <div>
             <label className="block text-sm text-gray-600 mb-1">Nome completo</label>
             <input
+              data-cy="register-name"
               className="input"
               required
               value={form.name}
@@ -68,6 +69,7 @@ export default function RegisterPage() {
           <div>
             <label className="block text-sm text-gray-600 mb-1">E-mail</label>
             <input
+              data-cy="register-email"
               type="email"
               className="input"
               required
@@ -78,6 +80,7 @@ export default function RegisterPage() {
           <div>
             <label className="block text-sm text-gray-600 mb-1">Telefone</label>
             <input
+              data-cy="register-phone"
               className="input"
               type="tel"
               value={form.phone}
@@ -91,6 +94,7 @@ export default function RegisterPage() {
           <div>
             <label className="block text-sm text-gray-600 mb-1">CPF/CNPJ (opcional)</label>
             <input
+              data-cy="register-document"
               className="input"
               value={form.document}
               onChange={(e) =>
@@ -106,6 +110,7 @@ export default function RegisterPage() {
           <div>
             <label className="block text-sm text-gray-600 mb-1">Senha (mín. 8 caracteres)</label>
             <input
+              data-cy="register-password"
               type="password"
               className="input"
               required
@@ -115,10 +120,23 @@ export default function RegisterPage() {
             />
           </div>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          {success && <p className="text-sm text-green-700">{success}</p>}
+          {error && (
+            <p data-cy="register-error" className="text-sm text-red-600">
+              {error}
+            </p>
+          )}
+          {success && (
+            <p data-cy="register-success" className="text-sm text-green-700">
+              {success}
+            </p>
+          )}
 
-          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+          <button
+            type="submit"
+            className="btn btn-primary w-full"
+            disabled={loading}
+            data-cy="register-submit"
+          >
             {loading ? "Cadastrando…" : "Criar conta"}
           </button>
         </form>

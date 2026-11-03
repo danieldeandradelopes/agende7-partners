@@ -20,6 +20,11 @@ Cypress.Commands.add("mockPartnerApi", () => {
       body: payments.partnerCommissionSummary,
     }).as("partnerCommissionSummary");
 
+    cy.intercept("GET", `${base}/sales-partner/me/funnel`, {
+      statusCode: 200,
+      body: payments.partnerFunnel,
+    }).as("partnerFunnel");
+
     cy.intercept("GET", `${base}/sales-partner/me/commissions*`, {
       statusCode: 200,
       body: [],
