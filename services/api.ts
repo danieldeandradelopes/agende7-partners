@@ -28,6 +28,25 @@ export interface CommissionSummary {
   available: number;
   paid: number;
   canceled: number;
+  predicted?: number;
+  total_count: number;
+}
+
+export interface PartnerFunnelSummary {
+  clicks: {
+    total: number;
+    last_7_days: number;
+    unique_last_7_days: number;
+    last_clicked_at: string | null;
+  };
+  trials_started: number;
+  trials_active: number;
+  paid_shops: number;
+  predicted: number;
+  pending_clearance: number;
+  available: number;
+  paid: number;
+  canceled: number;
   total_count: number;
 }
 
@@ -39,9 +58,11 @@ export interface PartnerCommission {
   commission_value: number;
   barbershop_id: number;
   barbershop_name?: string;
-  payment_id: number;
+  payment_id: number | null;
+  billing_cycle?: string | null;
   eligible_at: string | null;
   paid_at: string | null;
+  trial_ends_at?: string | null;
   created_at?: string;
 }
 
@@ -126,6 +147,10 @@ export const partnerApi = {
     return fetchAPI<CommissionSummary>(
       "/sales-partner/me/commissions/summary",
     );
+  },
+
+  getFunnelSummary() {
+    return fetchAPI<PartnerFunnelSummary>("/sales-partner/me/funnel");
   },
 
   getCommissions(status?: string) {

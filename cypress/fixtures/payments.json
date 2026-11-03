@@ -66,6 +66,24 @@
     "available": 50,
     "paid": 200,
     "canceled": 0,
+    "predicted": 4990,
+    "total_count": 3
+  },
+  "partnerFunnel": {
+    "clicks": {
+      "total": 42,
+      "last_7_days": 12,
+      "unique_last_7_days": 8,
+      "last_clicked_at": "2026-11-02T12:00:00.000Z"
+    },
+    "trials_started": 3,
+    "trials_active": 1,
+    "paid_shops": 2,
+    "predicted": 4990,
+    "pending_clearance": 150,
+    "available": 50,
+    "paid": 200,
+    "canceled": 0,
     "total_count": 3
   },
   "partnerLinks": {

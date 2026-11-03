@@ -12,7 +12,7 @@ describe("Partners — comissões (mock API)", () => {
 
   it("lista comissões e filtros", () => {
     cy.wait("@partnerCommissions");
-    cy.contains("Minhas comissões").should("be.visible");
+    cy.contains("Lojas e comissões").should("be.visible");
     cy.get("select").should("exist");
   });
 });
